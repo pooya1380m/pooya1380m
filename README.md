@@ -5,7 +5,7 @@
 	•	🛠️ Design scalable systems with microservices & cloud-native patterns.
 	•	🔄 Modernize legacy systems, build APIs & UIs, and automate DevOps workflows.
 	•	🤖 Exploring AI integration using fine-tuning models, Autogen, Semantic Kernel
- 		 Retrieval-Augmented Generation (RAG), Pyrit, and other GenAI tools to enhance developer & user experiences.
+ 	Retrieval-Augmented Generation (RAG), Pyrit, and other GenAI tools to enhance developer & user experiences.
 ---
 
 ## 🤝 Connect with Me
