@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from . import calc, compliance, photometry
+from . import calc, compliance, knowledge, photometry
 
 TOOLS = {
     "parse_photometry": photometry.load,
@@ -28,12 +28,20 @@ def main(argv=None) -> int:
     c.add_argument("room"); c.add_argument("--em", type=float, required=True)
     c.add_argument("--u0", type=float, required=True)
     c.add_argument("--ugr", type=float); c.add_argument("--ra", type=float)
+    d = sub.add_parser("ask", help="ask the LLM agent (needs `pip install openai` and OPENAI_API_KEY)")
+    d.add_argument("question")
+    e = sub.add_parser("kb"); e.add_argument("query")
     args = p.parse_args(argv)
     if args.cmd == "parse":
         l = photometry.load(args.file)
         print(json.dumps({**l.__dict__, "efficacy_lm_per_w": l.efficacy_lm_per_w}))
     elif args.cmd == "estimate":
         print(calc.luminaires_needed(args.lux, args.length, args.width, args.flux, args.height, args.mf))
+    elif args.cmd == "ask":
+        from .agent import run
+        print(run(args.question))
+    elif args.cmd == "kb":
+        print("\n\n".join(knowledge.search(args.query)))
     else:
         v = compliance.check(args.room, args.em, args.u0, args.ugr, args.ra)
         print("OK" if not v else "\n".join(v))

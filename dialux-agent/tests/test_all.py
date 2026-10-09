@@ -38,3 +38,18 @@ def test_compliance():
     assert len(compliance.check("office", 300, 0.4)) == 2
     with pytest.raises(KeyError):
         compliance.check("moon", 1, 1)
+
+
+def test_knowledge():
+    from dialux_agent import knowledge
+    assert any("EN 1838" in c for c in knowledge.search("emergency lighting escape route"))
+    assert knowledge.search("zzzqqq") == []
+
+
+def test_agent_tools():
+    from dialux_agent import agent
+    assert agent.call_tool("check_compliance", {"room_type": "office", "em": 600, "u0": 0.7})["compliant"]
+    assert "error" in agent.call_tool("nope", {})
+    assert "error" in agent.call_tool("check_compliance", {"room_type": "moon", "em": 1, "u0": 1})
+    assert agent.call_tool("estimate_luminaires", {"target_lux": 500, "length": 6, "width": 5,
+        "luminaire_flux_lm": 4000, "height_above_workplane": 2})
